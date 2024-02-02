@@ -1,10 +1,13 @@
 package com.shop.music.model;
 
+import java.util.Set;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -23,6 +26,9 @@ public class Pack {
 	
 	@Column(name="activate")
 	private boolean activate;
+	
+	@OneToMany(mappedBy="user")
+	private Set<User> users;
 	
 	public int getId() {
 		return id;
@@ -50,5 +56,12 @@ public class Pack {
 	}
 	public void setActivate(boolean activate) {
 		this.activate = activate;
+	}
+	
+	public Set<User> getUsers(){
+		return users;
+	}
+	public void setUsers(Set<User> users) {
+		this.users = users;
 	}
 }

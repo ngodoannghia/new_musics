@@ -149,6 +149,4 @@ public class User {
 	public void setpack(Pack pack) {
 		this.pack = pack;
 	}
-	
-	
 }
