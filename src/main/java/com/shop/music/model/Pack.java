@@ -11,7 +11,7 @@ import jakarta.persistence.Table;
 @Table(name = "pack")
 public class Pack {
 	@Id
-	@Column(name="id_pack")
+	@Column(name="pack_id")
 	private int id;
 	
 	@Enumerated(EnumType.STRING)

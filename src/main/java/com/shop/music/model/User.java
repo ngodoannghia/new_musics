@@ -7,19 +7,16 @@ import jakarta.persistence.*;
 @Table(name = "user")
 public class User {
     @Id
-    @Column(name = "id_user", length=100)
-	private long id;
-	
-	@Column(name="name", length=255)
-	private String name;
+    @Column(name = "user_id", length=100)
+	private String id;
 	
 	@Column(name="dateofbirth", columnDefinition="DATETIME")
 	private Date dateofbirth;
 	
-	@Column(name="name", length=255)
+	@Column(name="username", length=255, nullable=false, unique = true)
 	private String username;
 	
-	@Column(name="name", length=255)
+	@Column(name="password", length=255, nullable=false)
 	private String password;
 	
 	@Enumerated(EnumType.STRING)
@@ -30,21 +27,25 @@ public class User {
     @Temporal(value = TemporalType.TIMESTAMP)
 	private Date create_at;
 	
-	@Column(name="create_at")
+	@Column(name="update_at")
     @Temporal(value = TemporalType.TIMESTAMP)
 	private Date update_at;
 	
-	@Column(name="name", length=255)
+	@Column(name="address", length=255)
 	private String address;
 	
-	@Column(name="name", length=20)
+	@Column(name="phone", length=20, unique=true)
 	private String phone;
 	
-	@Column(name="name", length=255)
+	@Column(name="avatar", length=255)
 	private String avatar;
 	
-	@Column(name="name", length=255)
+	@Column(name="email", length=100)
 	private String email;
+	
+	@ManyToOne
+	@JoinColumn(name="pack_id")
+	private Pack pack;
 	
 	public User() {
 		
@@ -58,21 +59,19 @@ public class User {
 		this.password = password;
 		this.email = email;
 	}
+	public User(String username, String email, String password, String phone) {
+		this.username = username;
+		this.password = password;
+		this.email = email;
+		this.phone = phone;
+	}
 
-    public long getId() {
+    public String getId() {
         return id;
     }
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
-	
-	
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
 	
 	public Date getDate() {
 		return dateofbirth;
@@ -81,7 +80,6 @@ public class User {
 		this.dateofbirth = dateofbirth;
 	}
 	
-	@Column(name="username", length=255, nullable=false, unique = true)
 	public String getUsername() {
 		return username;
 	}
@@ -89,7 +87,6 @@ public class User {
 		this.username = username;
 	}
 	
-	@Column(name="password", length=255, nullable=false)
 	public String getPassword() {
 		return password;
 	}
@@ -97,8 +94,6 @@ public class User {
 		this.password = password;
 	}
 	
-	@Enumerated(EnumType.STRING)
-	@Column(name="role", length=100)
 	public ERole getRoles() {
 	    return role;
 	}
@@ -106,8 +101,6 @@ public class User {
 	    this.role = roles;
 	}
 	
-    @Column(name="create_at")
-    @Temporal(value = TemporalType.TIMESTAMP)
     public Date getCreate_at() {
     	return create_at;
     }
@@ -115,8 +108,6 @@ public class User {
     	this.create_at = create_at;
     }
     
-    @Column(name="update_at")
-    @Temporal(value = TemporalType.TIMESTAMP)
     public Date getUpdate_at() {
     	return update_at;
     }
@@ -124,7 +115,6 @@ public class User {
     	this.update_at = update_at;
     }
 	
-	@Column(name="address", length=255)
 	public String getAddress() {
 		return address;
 	}
@@ -132,7 +122,6 @@ public class User {
 		this.address = address;
 	}
 	
-	@Column(name="phone", length=100, unique=true)
 	public String getPhone() {
 		return phone;
 	}
@@ -140,7 +129,6 @@ public class User {
 		this.phone = phone;
 	}
 	
-	@Column(name="avatar", columnDefinition="TEXT")
 	public String getAvatar() {
 		return avatar;
 	}
@@ -148,11 +136,19 @@ public class User {
 		this.avatar = avatar;
 	}
 	
-	@Column(name="email", length=255, unique=true)
 	public String getEmail() {
 		return email;
 	}
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
+	public Pack getPack() {
+		return pack;
+	}
+	public void setpack(Pack pack) {
+		this.pack = pack;
+	}
+	
+	
 }
