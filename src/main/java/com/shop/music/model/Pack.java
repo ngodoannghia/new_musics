@@ -27,7 +27,7 @@ public class Pack {
 	@Column(name="activate")
 	private boolean activate;
 	
-	@OneToMany(mappedBy="user")
+	@OneToMany(mappedBy="pack")
 	private Set<User> users;
 	
 	public int getId() {
