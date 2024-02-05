@@ -1,14 +1,16 @@
 package com.shop.music.model;
 
 import java.util.Date;
+import java.util.Set;
+
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "user")
 public class User {
     @Id
-    @Column(name = "user_id", length=100)
-	private String id;
+    @Column(name = "user_id", columnDefinition="varchar(100)", length=100)
+	private String user_id;
 	
 	@Column(name="dateofbirth", columnDefinition="DATETIME")
 	private Date dateofbirth;
@@ -47,6 +49,9 @@ public class User {
 	@JoinColumn(name="pack_id")
 	private Pack pack;
 	
+	@ManyToMany(mappedBy="users")
+	private Set<Song> songs;
+	
 	public User() {
 		
 	}
@@ -65,13 +70,6 @@ public class User {
 		this.email = email;
 		this.phone = phone;
 	}
-
-    public String getId() {
-        return id;
-    }
-    public void setId(String id) {
-        this.id = id;
-    }
 	
 	public Date getDate() {
 		return dateofbirth;
@@ -147,6 +145,31 @@ public class User {
 		return pack;
 	}
 	public void setpack(Pack pack) {
+		this.pack = pack;
+	}
+	
+	public String getUser_id() {
+		return user_id;
+	}
+	public void setUser_id(String user_id) {
+		this.user_id = user_id;
+	}
+	
+	public Date getDateofbirth() {
+		return dateofbirth;
+	}
+	public void setDateofbirth(Date dateofbirth) {
+		this.dateofbirth = dateofbirth;
+	}
+	
+	public ERole getRole() {
+		return role;
+	}
+	public void setRole(ERole role) {
+		this.role = role;
+	}
+	
+	public void setPack(Pack pack) {
 		this.pack = pack;
 	}
 }
