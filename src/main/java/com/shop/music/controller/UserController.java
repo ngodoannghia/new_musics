@@ -12,7 +12,6 @@ import com.shop.music.common.ApiResponse;
 import com.shop.music.common.AuthenResponse;
 import com.shop.music.common.Authentication;
 import com.shop.music.common.JwtTokenUtil;
-import com.shop.music.common.MessageResponse;
 import com.shop.music.config.AppConstant;
 import com.shop.music.dto.LoginDTO;
 import com.shop.music.dto.SignupDTO;

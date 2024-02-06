@@ -1,15 +1,14 @@
-package com.shop.music.common;
+package com.shop.music.service;
 
 import java.util.ArrayList;
-
-import com.shop.music.model.User;
-import com.shop.music.service.IUserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import com.shop.music.model.User;
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
     @Autowired
