@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 import at.favre.lib.crypto.bcrypt.BCrypt;
 
 import com.shop.music.common.ApiResponse;
+import com.shop.music.common.AuthenResponse;
+import com.shop.music.common.Authentication;
+import com.shop.music.common.JwtTokenUtil;
 import com.shop.music.common.MessageResponse;
 import com.shop.music.config.AppConstant;
 import com.shop.music.dto.LoginDTO;
@@ -24,6 +27,12 @@ import java.util.UUID;
 public class UserController {
 	@Autowired
     private IUserService userService;
+	
+	@Autowired
+	private Authentication authentication;
+	
+	@Autowired
+    private JwtTokenUtil jwtTokenUtil;
 	
     @Autowired
     BCrypt.Hasher bHasher;
@@ -44,9 +53,16 @@ public class UserController {
 	}
 	
 	@PostMapping("/login")
-	public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO){
-		
-		
-		return ResponseEntity.ok(new MessageResponse("User login successfully!"));
+	public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) throws Exception{
+		User user = userService.findByUsername(loginDTO.getUsername());
+		user = authentication.authenticate(loginDTO, user);
+        if (user == null){
+            return ResponseEntity.ok(new ApiResponse<AuthenResponse<User>>(1, AppConstant.ERROR_MESSAGE,null));
+        }
+        final String token = jwtTokenUtil.generateToken(user);
+        AuthenResponse<User> authenResponse = new AuthenResponse<User>(token);
+        user.setPassword("");
+        authenResponse.setUser(user);
+        return ResponseEntity.ok(new ApiResponse<AuthenResponse<User>>(0, AppConstant.ERROR_MESSAGE,authenResponse));
 	}
 }
