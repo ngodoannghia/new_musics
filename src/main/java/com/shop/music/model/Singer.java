@@ -1,6 +1,6 @@
 package com.shop.music.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import jakarta.persistence.Column;
@@ -22,7 +22,7 @@ public class Singer {
 	private String name;
 	
 	@Column(name="dateofbirth", columnDefinition="DATETIME")
-	private Date dateofbirth;
+	private LocalDateTime dateofbirth;
 	
 	@Column(name="avatar", length=255)
 	private String avatar;
@@ -81,11 +81,11 @@ public class Singer {
 		this.name = name;
 	}
 
-	public Date getDateofbirth() {
+	public LocalDateTime getDateofbirth() {
 		return dateofbirth;
 	}
 
-	public void setDateofbirth(Date dateofbirth) {
+	public void setDateofbirth(LocalDateTime dateofbirth) {
 		this.dateofbirth = dateofbirth;
 	}
 

@@ -1,6 +1,6 @@
 package com.shop.music.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,11 +24,11 @@ public class Comment {
 	
 	@Column(name="create_at")
     @Temporal(value = TemporalType.TIMESTAMP)
-	private Date create_at;
+	private LocalDateTime create_at;
 	
 	@Column(name="update_at")
     @Temporal(value = TemporalType.TIMESTAMP)
-	private Date update_at;
+	private LocalDateTime update_at;
 	
 	@Column(name="is_delete")
 	private boolean is_delete;
@@ -56,19 +56,19 @@ public class Comment {
 		this.message = message;
 	}
 
-	public Date getCreate_at() {
+	public LocalDateTime getCreate_at() {
 		return create_at;
 	}
 
-	public void setCreate_at(Date create_at) {
+	public void setCreate_at(LocalDateTime create_at) {
 		this.create_at = create_at;
 	}
 
-	public Date getUpdate_at() {
+	public LocalDateTime getUpdate_at() {
 		return update_at;
 	}
 
-	public void setUpdate_at(Date update_at) {
+	public void setUpdate_at(LocalDateTime update_at) {
 		this.update_at = update_at;
 	}
 

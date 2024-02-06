@@ -1,6 +1,6 @@
 package com.shop.music.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import jakarta.persistence.*;
@@ -13,7 +13,7 @@ public class User {
 	private String user_id;
 	
 	@Column(name="dateofbirth", columnDefinition="DATETIME")
-	private Date dateofbirth;
+	private LocalDateTime dateofbirth;
 	
 	@Column(name="username", length=255, nullable=false, unique = true)
 	private String username;
@@ -27,11 +27,11 @@ public class User {
 	
 	@Column(name="create_at")
     @Temporal(value = TemporalType.TIMESTAMP)
-	private Date create_at;
+	private LocalDateTime create_at;
 	
 	@Column(name="update_at")
     @Temporal(value = TemporalType.TIMESTAMP)
-	private Date update_at;
+	private LocalDateTime update_at;
 	
 	@Column(name="address", length=255)
 	private String address;
@@ -44,6 +44,9 @@ public class User {
 	
 	@Column(name="email", length=100)
 	private String email;
+	
+	@Column(name="is_delete")
+	private boolean is_delete;
 	
 	@ManyToOne
 	@JoinColumn(name="pack_id")
@@ -71,10 +74,10 @@ public class User {
 		this.phone = phone;
 	}
 	
-	public Date getDate() {
+	public LocalDateTime getDate() {
 		return dateofbirth;
 	}
-	public void setDate(Date dateofbirth) {
+	public void setDate(LocalDateTime dateofbirth) {
 		this.dateofbirth = dateofbirth;
 	}
 	
@@ -99,17 +102,17 @@ public class User {
 	    this.role = roles;
 	}
 	
-    public Date getCreate_at() {
+    public LocalDateTime getCreate_at() {
     	return create_at;
     }
-    public void setCreate_at(Date create_at) {
+    public void setCreate_at(LocalDateTime create_at) {
     	this.create_at = create_at;
     }
     
-    public Date getUpdate_at() {
+    public LocalDateTime getUpdate_at() {
     	return update_at;
     }
-    public void setUpdate_at(Date update_at) {
+    public void setUpdate_at(LocalDateTime update_at) {
     	this.update_at = update_at;
     }
 	
@@ -155,10 +158,10 @@ public class User {
 		this.user_id = user_id;
 	}
 	
-	public Date getDateofbirth() {
+	public LocalDateTime getDateofbirth() {
 		return dateofbirth;
 	}
-	public void setDateofbirth(Date dateofbirth) {
+	public void setDateofbirth(LocalDateTime dateofbirth) {
 		this.dateofbirth = dateofbirth;
 	}
 	
@@ -172,4 +175,17 @@ public class User {
 	public void setPack(Pack pack) {
 		this.pack = pack;
 	}
+	public boolean isIs_delete() {
+		return is_delete;
+	}
+	public void setIs_delete(boolean is_delete) {
+		this.is_delete = is_delete;
+	}
+	public Set<Song> getSongs() {
+		return songs;
+	}
+	public void setSongs(Set<Song> songs) {
+		this.songs = songs;
+	}
+	
 }

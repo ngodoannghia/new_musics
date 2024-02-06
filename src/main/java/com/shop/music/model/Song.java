@@ -1,7 +1,7 @@
 package com.shop.music.model;
 
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import jakarta.persistence.Column;
@@ -34,15 +34,15 @@ public class Song {
 	
 	@Column(name="create_at")
 	@Temporal(value = TemporalType.TIMESTAMP)
-	private Date create_at;
+	private LocalDateTime create_at;
 	
 	@Column(name="update_at")
 	@Temporal(value = TemporalType.TIMESTAMP)
-	private Date update_at;
+	private LocalDateTime update_at;
 	
 	@Column(name="publish_at")
 	@Temporal(value = TemporalType.TIMESTAMP)
-	private Date publish_at;
+	private LocalDateTime publish_at;
 	
 	@Column(name="link_mp3", length=255)
 	private String link_mp3;
@@ -123,27 +123,27 @@ public class Song {
 		this.description = description;
 	}
 
-	public Date getCreate_at() {
+	public LocalDateTime getCreate_at() {
 		return create_at;
 	}
 
-	public void setCreate_at(Date create_at) {
+	public void setCreate_at(LocalDateTime create_at) {
 		this.create_at = create_at;
 	}
 
-	public Date getUpdate_at() {
+	public LocalDateTime getUpdate_at() {
 		return update_at;
 	}
 
-	public void setUpdate_at(Date update_at) {
+	public void setUpdate_at(LocalDateTime update_at) {
 		this.update_at = update_at;
 	}
 
-	public Date getPublish_at() {
+	public LocalDateTime getPublish_at() {
 		return publish_at;
 	}
 
-	public void setPublish_at(Date publish_at) {
+	public void setPublish_at(LocalDateTime publish_at) {
 		this.publish_at = publish_at;
 	}
 
