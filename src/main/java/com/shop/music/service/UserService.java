@@ -42,9 +42,21 @@ public class UserService implements IUserService {
 	}
 
 	@Override
-	public User findByUsername(String username) {
+	public Optional<User> findByUsername(String username) {
 		// TODO Auto-generated method stub
 		return userRepository.findByUsername(username);
+	}
+
+	@Override
+	public boolean existsByUsername(String username) {
+		// TODO Auto-generated method stub
+		return userRepository.existsByUsername(username);
+	}
+
+	@Override
+	public boolean existsByEmail(String email) {
+		// TODO Auto-generated method stub
+		return userRepository.existsByEmail(email);
 	}
 
 

@@ -1,67 +1,82 @@
 package com.shop.music.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import at.favre.lib.crypto.bcrypt.BCrypt;
+import org.springframework.security.core.Authentication;
 
 import com.shop.music.common.ApiResponse;
-import com.shop.music.common.AuthenResponse;
-import com.shop.music.common.Authentication;
-import com.shop.music.common.JwtTokenUtil;
+import com.shop.music.common.JwtUtils;
 import com.shop.music.config.AppConstant;
 import com.shop.music.dto.LoginDTO;
 import com.shop.music.dto.SignupDTO;
+import com.shop.music.dto.UserInforDTO;
 import com.shop.music.model.User;
 import com.shop.music.service.IUserService;
+import com.shop.music.service.UserDetailsImpl;
+
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/admin")
+@RequestMapping("/api/user/")
 public class UserController {
+	@Autowired
+	AuthenticationManager authenticationManager;
+	
 	@Autowired
     private IUserService userService;
 	
 	@Autowired
-	private Authentication authentication;
+    private JwtUtils jwtUtils;
 	
 	@Autowired
-    private JwtTokenUtil jwtTokenUtil;
-	
-    @Autowired
-    BCrypt.Hasher bHasher;
+	PasswordEncoder encoder;
 	
 	@PostMapping("/signup")
 	public ResponseEntity<ApiResponse<?>> signup(@RequestBody SignupDTO signupDTO) {
-		// Create new user's account
-		String hashString =  bHasher.hashToString(12,signupDTO.getPassword().toCharArray());
-		User user = new User(signupDTO.getUsername(),
-							signupDTO.getEmail(),
-							signupDTO.getPassword());
-		user.setUser_id(UUID.randomUUID().toString());
-		user.setPassword(hashString);
-		user.setCreate_at(LocalDateTime.now());
-		user = userService.saveUser(user);
-
-	    return ResponseEntity.ok(new ApiResponse<>(0, AppConstant.SUCCESS_MESSAGE,user));
+		if (userService.existsByUsername(signupDTO.getUsername())) {
+			return ResponseEntity.badRequest().body(new ApiResponse<SignupDTO>(400, "Error: Username is already taken!", signupDTO));
+		}
+		
+	    User user = new User(signupDTO.getUsername(), encoder.encode(signupDTO.getPassword()));
+	    user.setUser_id(UUID.randomUUID().toString());
+	    user.setCreate_at(LocalDateTime.now());
+	    userService.saveUser(user);
+	    return ResponseEntity.ok().body(new ApiResponse<User>(200, AppConstant.SUCCESS_MESSAGE,user));
 	}
 	
 	@PostMapping("/login")
-	public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) throws Exception{
-		User user = userService.findByUsername(loginDTO.getUsername());
-		user = authentication.authenticate(loginDTO, user);
-        if (user == null){
-            return ResponseEntity.ok(new ApiResponse<AuthenResponse<User>>(1, AppConstant.ERROR_MESSAGE,null));
-        }
-        final String token = jwtTokenUtil.generateToken(user);
-        AuthenResponse<User> authenResponse = new AuthenResponse<User>(token);
-        user.setPassword("");
-        authenResponse.setUser(user);
-        return ResponseEntity.ok(new ApiResponse<AuthenResponse<User>>(0, AppConstant.ERROR_MESSAGE,authenResponse));
+	public ResponseEntity<?> authenticateUser(@RequestBody LoginDTO loginDTO){
+		
+		Authentication authentication = authenticationManager
+			        .authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword()));
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+		
+		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+		
+		ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(userDetails);
+        
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
+                .body(new UserInforDTO(userDetails.getId(),
+                                       userDetails.getUsername(),
+                                       userDetails.getEmail(),
+                                       userDetails.getRole()));
+	}
+	@PostMapping("/signout")
+	public ResponseEntity<?> logoutUser() {
+		ResponseCookie cookie = jwtUtils.getCleanJwtCookie();
+		return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString())
+				.body(new ApiResponse<>(200, "You've been signed out!", null));
 	}
 }

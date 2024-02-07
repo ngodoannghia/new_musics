@@ -14,6 +14,10 @@ public interface IUserService {
 
 	Optional<User> findUserById(String id);  
 	
-	User findByUsername(String username);
+	Optional<User> findByUsername(String username);
+	
+	boolean existsByUsername(String username);
+	
+	boolean existsByEmail(String email);
 	
 }

@@ -21,8 +21,8 @@ public class User {
 	@Column(name="password", length=255, nullable=false)
 	private String password;
 	
+	@Column(name="role", length=100, columnDefinition = "varchar(100) default 'ROLE_USER'")
 	@Enumerated(EnumType.STRING)
-	@Column(name="role", length=100)
 	private ERole role;
 	
 	@Column(name="create_at")
