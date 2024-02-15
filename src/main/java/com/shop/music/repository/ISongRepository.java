@@ -7,5 +7,5 @@ import com.shop.music.model.Song;
 
 @Repository
 public interface ISongRepository extends JpaRepository<Song, String> {
-
+	
 }
