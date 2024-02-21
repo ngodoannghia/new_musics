@@ -2,10 +2,15 @@ package com.shop.music.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.shop.music.model.Song;
 import com.shop.music.repository.ISongRepository;
 
+@Service
 public class SongService implements ISongService {
+	@Autowired
 	private ISongRepository songRepository;
 	
 	@Override
