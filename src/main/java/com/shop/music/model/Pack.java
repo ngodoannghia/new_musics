@@ -3,10 +3,14 @@ package com.shop.music.model;
 import java.util.Date;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -18,6 +22,7 @@ import jakarta.persistence.TemporalType;
 public class Pack {
 	@Id
 	@Column(name="pack_id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long pack_id;
 	
 	@Enumerated(EnumType.STRING)
@@ -38,8 +43,13 @@ public class Pack {
 	@Temporal(value = TemporalType.TIMESTAMP)
 	private Date date_expiration;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="pack")
 	private Set<User> users;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy="pack")
+	private Set<Song> song;
 	
 	public Long getPack_id() {
 		return pack_id;

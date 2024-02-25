@@ -2,8 +2,12 @@ package com.shop.music.model;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -15,6 +19,7 @@ import jakarta.persistence.Table;
 public class Playlist {
 	@Id
 	@Column(name="playlist_id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long playlist_id;
 	
 	@Column(name="name", length=100)
@@ -28,6 +33,7 @@ public class Playlist {
 	@JoinColumn(name="country_id")
 	private Country country;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="playlist")
 	private Set<Song> songs;
 	

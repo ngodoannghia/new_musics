@@ -8,16 +8,16 @@ import java.io.IOException;
 import org.springframework.web.multipart.MultipartFile;
 
 
-public class AudioProcess {
+public class FileProcess {
 	public String save_file;
 	public MultipartFile file;
 	
-	public AudioProcess(String save_file, MultipartFile file) {
+	public FileProcess(String save_file, MultipartFile file) {
 		this.save_file = save_file;
 		this.file = file;
 	}
 	
-	public boolean saveAudio() throws IOException {
+	public boolean saveFile() throws IOException {
 		if (!file.isEmpty()) {
 			File outputFile = new File(save_file);
 			
