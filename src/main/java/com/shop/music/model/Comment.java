@@ -2,6 +2,9 @@ package com.shop.music.model;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -9,8 +12,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinColumns;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+
+import com.shop.music.common.LocalDateTimeDeserializer;
+import com.shop.music.common.LocalDateTimeSerializer;
 
 @Entity
 @Table(name = "comment")
@@ -22,12 +26,14 @@ public class Comment {
 	@Column(name="message", length=255)
 	private String message;
 	
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
 	@Column(name="create_at")
-    @Temporal(value = TemporalType.TIMESTAMP)
 	private LocalDateTime create_at;
 	
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
 	@Column(name="update_at")
-    @Temporal(value = TemporalType.TIMESTAMP)
 	private LocalDateTime update_at;
 	
 	@Column(name="is_delete")

@@ -4,6 +4,11 @@ package com.shop.music.model;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.shop.music.common.LocalDateTimeDeserializer;
+import com.shop.music.common.LocalDateTimeSerializer;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -13,8 +18,6 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 
 @Entity
 @Table(name = "song")
@@ -32,16 +35,19 @@ public class Song {
 	@Column(name="description", length=255)
 	private String description;
 	
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
 	@Column(name="create_at")
-	@Temporal(value = TemporalType.TIMESTAMP)
 	private LocalDateTime create_at;
 	
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
 	@Column(name="update_at")
-	@Temporal(value = TemporalType.TIMESTAMP)
 	private LocalDateTime update_at;
 	
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
 	@Column(name="publish_at")
-	@Temporal(value = TemporalType.TIMESTAMP)
 	private LocalDateTime publish_at;
 	
 	@Column(name="link_mp3", length=255)

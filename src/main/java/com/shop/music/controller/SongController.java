@@ -3,11 +3,14 @@ package com.shop.music.controller;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -170,13 +173,43 @@ public class SongController {
         else {
         	return ResponseEntity.ok().body(new ApiResponse<Song>(200, AppConstant.SUCCESS_MESSAGE,song));
         }
-		
 	}
 	
-//	@PostMapping("/filter/category/{category_id}")
-//	public ResponseEntity<MessageResponse> filterSongByCategory(@PathVariable("category_id") Long category_id){
-//		
-//	}
+	@GetMapping("/get/bytitle/{title}")
+    public List<Song> getSongByTitle(@PathVariable String title) {
+        return songService.findByTitle(title);
+    }
 	
+	@GetMapping("/get/bycategory/{category_id}")
+	public List<Song> getSongByCategory(@PathVariable Long category_id){
+		return songService.findByCategory(category_id);
+	}
+	
+	@GetMapping("/get/bycountry/{country_id}")
+	public List<Song> getSongByCountry(@PathVariable Long country_id){
+		return songService.findByCountry(country_id);
+	}
+	
+	@GetMapping("/get/byalbum/{album_id}")
+	public List<Song> getSongByAlbum(@PathVariable Long album_id){
+		return songService.findByAlbum(album_id);
+	}
+	
+	@GetMapping("/get/byplaylist/{playlist_id}")
+	public List<Song> getSongByPlaylist(@PathVariable Long playlist_id){
+		return songService.findByPlaylist(playlist_id);
+	}
+	
+	@DeleteMapping("/delete/{song_id}")
+	public ResponseEntity<MessageResponse> deleteSong(@PathVariable String song_id){
+		Optional<Song> song = songService.findById(song_id);
+		if (song.isPresent()) {
+			songService.deleteById(song_id);			
+			return ResponseEntity.ok().body(new MessageResponse(AppConstant.SUCCESS_MESSAGE, (long) 200));
+		}
+		else {
+			return ResponseEntity.badRequest().body(new MessageResponse(AppConstant.BAD_REQUEST_MESSAGE, (long) 200));
+		}
+	}
 	
 }

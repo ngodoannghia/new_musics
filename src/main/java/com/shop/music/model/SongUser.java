@@ -2,6 +2,8 @@ package com.shop.music.model;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -33,6 +35,7 @@ public class SongUser {
     @Column(name="react")
     private boolean react;
     
+    @JsonIgnore
     @OneToMany(mappedBy="songuser")
     private Set<Comment> comments;
 

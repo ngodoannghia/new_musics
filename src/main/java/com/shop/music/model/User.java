@@ -1,7 +1,14 @@
 package com.shop.music.model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.shop.music.common.LocalDateTimeDeserializer;
+import com.shop.music.common.LocalDateTimeSerializer;
 
 import jakarta.persistence.*;
 
@@ -12,8 +19,8 @@ public class User {
     @Column(name = "user_id", columnDefinition="varchar(100)", length=100)
 	private String user_id;
 	
-	@Column(name="dateofbirth", columnDefinition="DATETIME")
-	private LocalDateTime dateofbirth;
+	@Column(name="dateofbirth", columnDefinition="DATE")
+	private LocalDate dateofbirth;
 	
 	@Column(name="username", length=255, nullable=false, unique = true)
 	private String username;
@@ -25,12 +32,14 @@ public class User {
 	@Enumerated(EnumType.STRING)
 	private ERole role;
 	
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
 	@Column(name="create_at")
-    @Temporal(value = TemporalType.TIMESTAMP)
 	private LocalDateTime create_at;
 	
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
 	@Column(name="update_at")
-    @Temporal(value = TemporalType.TIMESTAMP)
 	private LocalDateTime update_at;
 	
 	@Column(name="address", length=255)
@@ -52,6 +61,7 @@ public class User {
 	@JoinColumn(name="pack_id")
 	private Pack pack;
 	
+	@JsonIgnore
 	@ManyToMany(mappedBy="users")
 	private Set<Song> songs;
 	
@@ -74,10 +84,10 @@ public class User {
 		this.phone = phone;
 	}
 	
-	public LocalDateTime getDate() {
+	public LocalDate getDateOfBirth() {
 		return dateofbirth;
 	}
-	public void setDate(LocalDateTime dateofbirth) {
+	public void setDateOfBirth(LocalDate dateofbirth) {
 		this.dateofbirth = dateofbirth;
 	}
 	
@@ -156,13 +166,6 @@ public class User {
 	}
 	public void setUser_id(String user_id) {
 		this.user_id = user_id;
-	}
-	
-	public LocalDateTime getDateofbirth() {
-		return dateofbirth;
-	}
-	public void setDateofbirth(LocalDateTime dateofbirth) {
-		this.dateofbirth = dateofbirth;
 	}
 	
 	public ERole getRole() {
