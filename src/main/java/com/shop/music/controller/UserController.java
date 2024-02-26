@@ -52,6 +52,7 @@ public class UserController {
 	    User user = new User(signupDTO.getUsername(), encoder.encode(signupDTO.getPassword()));
 	    user.setUser_id(UUID.randomUUID().toString());
 	    user.setCreate_at(LocalDateTime.now());
+	    user.setEmail(signupDTO.getEmail());
 	    userService.saveUser(user);
 	    return ResponseEntity.ok().body(new ApiResponse<User>(200, AppConstant.SUCCESS_MESSAGE,user));
 	}
