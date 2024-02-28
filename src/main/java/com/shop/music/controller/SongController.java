@@ -175,6 +175,11 @@ public class SongController {
         }
 	}
 	
+	@GetMapping("/get/byid/{song_id}")
+	public Song getSongById(@PathVariable String song_id) {
+		return songService.findById(song_id).get();
+	}
+	
 	@GetMapping("/get/bytitle/{title}")
     public List<Song> getSongByTitle(@PathVariable String title) {
         return songService.findByTitle(title);
@@ -211,5 +216,7 @@ public class SongController {
 			return ResponseEntity.badRequest().body(new MessageResponse(AppConstant.BAD_REQUEST_MESSAGE, (long) 200));
 		}
 	}
+	
+	
 	
 }

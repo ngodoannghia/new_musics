@@ -1,6 +1,5 @@
 package com.shop.music.model;
 
-import java.util.Date;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -14,8 +13,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 
 @Entity
 @Table(name = "pack")
@@ -32,16 +29,6 @@ public class Pack {
 	@Column(name="price")
 	private float price;
 	
-	@Column(name="activate")
-	private boolean activate;
-	
-	@Column(name="date_buy")
-	@Temporal(value = TemporalType.TIMESTAMP)
-	private Date date_buy;
-	
-	@Column(name="date_expiration")
-	@Temporal(value = TemporalType.TIMESTAMP)
-	private Date date_expiration;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy="pack")
@@ -57,18 +44,6 @@ public class Pack {
 	public void setPack_id(Long pack_id) {
 		this.pack_id = pack_id;
 	}
-	public Date getDate_buy() {
-		return date_buy;
-	}
-	public void setDate_buy(Date date_buy) {
-		this.date_buy = date_buy;
-	}
-	public Date getDate_expiration() {
-		return date_expiration;
-	}
-	public void setDate_expiration(Date date_expiration) {
-		this.date_expiration = date_expiration;
-	}
 	public EPack getName() {
 		return name;
 	}
@@ -81,13 +56,6 @@ public class Pack {
 	}
 	public void setPrice(float price) {
 		this.price = price;
-	}
-	
-	public boolean getActivate() {
-		return activate;
-	}
-	public void setActivate(boolean activate) {
-		this.activate = activate;
 	}
 	
 	public Set<User> getUsers(){

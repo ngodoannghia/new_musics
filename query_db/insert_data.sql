@@ -13,4 +13,8 @@ insert into country (name) values ("Nhạc Hoa");
 insert into album (name) values ("Album dân ca Lưu Ánh Loan");
 insert into album (name) values ("Album Khắc Việt remix");
 
+insert into pack (name, price) values ("Normal", 100000);
+insert into pack (name, price) values ("Vip", 100000);
+insert into pack (name, price) values ("Super_Vip", 100000);
+
 

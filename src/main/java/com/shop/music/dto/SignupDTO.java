@@ -1,5 +1,7 @@
 package com.shop.music.dto;
 
+import java.time.LocalDate;
+
 public class SignupDTO {
     private String username;
  
@@ -12,6 +14,8 @@ public class SignupDTO {
     private String address;
     
     private String avatar;
+    
+    private LocalDate dateofbirth;
   
     public String getPhone() {
 		return phone;
@@ -60,5 +64,13 @@ public class SignupDTO {
     public void setPassword(String password) {
         this.password = password;
     }
+
+	public LocalDate getDateofbirth() {
+		return dateofbirth;
+	}
+
+	public void setDateofbirth(LocalDate dateofbirth) {
+		this.dateofbirth = dateofbirth;
+	}
   
 }

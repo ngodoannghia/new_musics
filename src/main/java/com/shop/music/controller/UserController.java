@@ -20,7 +20,11 @@ import com.shop.music.config.AppConstant;
 import com.shop.music.dto.LoginDTO;
 import com.shop.music.dto.SignupDTO;
 import com.shop.music.dto.UserInforDTO;
+import com.shop.music.model.EPack;
+import com.shop.music.model.ERole;
+import com.shop.music.model.Pack;
 import com.shop.music.model.User;
+import com.shop.music.service.IPackService;
 import com.shop.music.service.IUserService;
 import com.shop.music.service.UserDetailsImpl;
 
@@ -38,6 +42,9 @@ public class UserController {
     private IUserService userService;
 	
 	@Autowired
+	private IPackService packService;
+	
+	@Autowired
     private JwtUtils jwtUtils;
 	
 	@Autowired
@@ -53,7 +60,15 @@ public class UserController {
 	    user.setUser_id(UUID.randomUUID().toString());
 	    user.setCreate_at(LocalDateTime.now());
 	    user.setEmail(signupDTO.getEmail());
+	    user.setPhone(signupDTO.getPhone());
+	    user.setDateofbirth(signupDTO.getDateofbirth());
+	    user.setRole(ERole.ROLE_USER);
 	    userService.saveUser(user);
+	    
+	    Pack pack = packService.findPackByName(EPack.Normal).get();
+	    user.setPack(pack);
+	    userService.saveUser(user);
+	    
 	    return ResponseEntity.ok().body(new ApiResponse<User>(200, AppConstant.SUCCESS_MESSAGE,user));
 	}
 	

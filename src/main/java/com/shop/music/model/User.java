@@ -41,7 +41,17 @@ public class User {
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
 	@Column(name="update_at")
 	private LocalDateTime update_at;
+    
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+	@Column(name="date_buy")
+	private LocalDateTime date_buy;
 	
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+	@Column(name="date_expiration")
+	private LocalDateTime date_expiration;
+    
 	@Column(name="address", length=255)
 	private String address;
 	
@@ -65,6 +75,26 @@ public class User {
 	@ManyToMany(mappedBy="users")
 	private Set<Song> songs;
 	
+	public LocalDate getDateofbirth() {
+		return dateofbirth;
+	}
+	public void setDateofbirth(LocalDate dateofbirth) {
+		this.dateofbirth = dateofbirth;
+	}
+	public LocalDateTime getDate_buy() {
+		return date_buy;
+	}
+	public void setDate_buy(LocalDateTime date_buy) {
+		this.date_buy = date_buy;
+	}
+	public LocalDateTime getDate_expiration() {
+		return date_expiration;
+	}
+	public void setDate_expiration(LocalDateTime date_expiration) {
+		this.date_expiration = date_expiration;
+	}
+
+	
 	public User() {
 		
 	}
@@ -82,13 +112,6 @@ public class User {
 		this.password = password;
 		this.email = email;
 		this.phone = phone;
-	}
-	
-	public LocalDate getDateOfBirth() {
-		return dateofbirth;
-	}
-	public void setDateOfBirth(LocalDate dateofbirth) {
-		this.dateofbirth = dateofbirth;
 	}
 	
 	public String getUsername() {
@@ -157,10 +180,9 @@ public class User {
 	public Pack getPack() {
 		return pack;
 	}
-	public void setpack(Pack pack) {
+	public void setPack(Pack pack) {
 		this.pack = pack;
 	}
-	
 	public String getUser_id() {
 		return user_id;
 	}
@@ -175,9 +197,7 @@ public class User {
 		this.role = role;
 	}
 	
-	public void setPack(Pack pack) {
-		this.pack = pack;
-	}
+
 	public boolean isIs_delete() {
 		return is_delete;
 	}

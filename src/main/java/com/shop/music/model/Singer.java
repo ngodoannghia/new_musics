@@ -3,6 +3,8 @@ package com.shop.music.model;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -38,9 +40,11 @@ public class Singer {
 	@JoinColumn(name="country_id")
 	private Country country;
 	
+	@JsonIgnore
 	@ManyToMany(mappedBy="singers")
 	private Set<Album> albums;
 	
+	@JsonIgnore
 	@ManyToMany(mappedBy="singers")
 	private Set<Song> songs;
 	

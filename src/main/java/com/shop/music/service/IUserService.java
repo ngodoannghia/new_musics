@@ -23,4 +23,6 @@ public interface IUserService {
 	
 	boolean existsByEmail(String email);
 	
+	boolean existByPhone(String phone);
+	
 }

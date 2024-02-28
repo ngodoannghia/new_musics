@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.shop.music.model.EPack;
 import com.shop.music.model.Pack;
 import com.shop.music.repository.IPackRepository;
 
@@ -17,6 +18,12 @@ public class PackService implements IPackService {
 	public Optional<Pack> findPackById(Long id) {
 		// TODO Auto-generated method stub
 		return packRepository.findById(id);
+	}
+
+	@Override
+	public Optional<Pack> findPackByName(EPack name) {
+		// TODO Auto-generated method stub
+		return packRepository.findPackByName(name);
 	}
 
 }

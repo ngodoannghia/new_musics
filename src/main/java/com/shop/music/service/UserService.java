@@ -59,5 +59,11 @@ public class UserService implements IUserService {
 		return userRepository.existsByEmail(email);
 	}
 
+	@Override
+	public boolean existByPhone(String phone) {
+		// TODO Auto-generated method stub
+		return userRepository.existsByPhone(phone);
+	}
+
 
 }
