@@ -176,33 +176,97 @@ public class SongController {
 	}
 	
 	@GetMapping("/get/byid/{song_id}")
-	public Song getSongById(@PathVariable String song_id) {
-		return songService.findById(song_id).get();
+	public ApiResponse<?> getSongById(@PathVariable String song_id) {
+		try {
+			Song song = songService.findById(song_id).get();
+			if (song != null) {
+				return new ApiResponse<>(200, AppConstant.SUCCESS_MESSAGE, song);
+			}
+			else {
+				return new ApiResponse<>(400, "Data empty", song);
+			}
+		} catch(org.hibernate.exception.ConstraintViolationException e) {
+			return new ApiResponse<>(400, e.toString(), null);
+		}
+
 	}
 	
 	@GetMapping("/get/bytitle/{title}")
-    public List<Song> getSongByTitle(@PathVariable String title) {
-        return songService.findByTitle(title);
+    public ApiResponse<?> getSongByTitle(@PathVariable String title) {
+		try {
+			List<Song> songs = songService.findByTitle(title);
+			if (songs != null) {
+				return new ApiResponse<>(200, AppConstant.SUCCESS_MESSAGE, songs); 
+			}
+			else {
+				return new ApiResponse<>(400, "Data empty", songs); 
+			}
+		} catch(org.hibernate.exception.ConstraintViolationException e) {
+			return new ApiResponse<>(400, e.toString(), null);
+		}
     }
 	
 	@GetMapping("/get/bycategory/{category_id}")
-	public List<Song> getSongByCategory(@PathVariable Long category_id){
-		return songService.findByCategory(category_id);
+	public ApiResponse<?> getSongByCategory(@PathVariable Long category_id){
+		try {
+			List<Song> songs = songService.findByCategory(category_id);
+			if (songs != null) {
+				return new ApiResponse<>(200, AppConstant.SUCCESS_MESSAGE, songs); 
+			}
+			else {
+				return new ApiResponse<>(400, "Data empty", songs); 
+			}
+		} catch(org.hibernate.exception.ConstraintViolationException e) {
+			return new ApiResponse<>(400, e.toString(), null);
+		}
+
 	}
 	
 	@GetMapping("/get/bycountry/{country_id}")
-	public List<Song> getSongByCountry(@PathVariable Long country_id){
-		return songService.findByCountry(country_id);
+	public ApiResponse<?> getSongByCountry(@PathVariable Long country_id){
+		try {
+			List<Song> songs = songService.findByCountry(country_id);
+			
+			if (songs != null) {
+				return new ApiResponse<>(200, AppConstant.SUCCESS_MESSAGE, songs); 
+			}
+			else {
+				return new ApiResponse<>(400, "Data empty", songs); 
+			}
+		} catch(org.hibernate.exception.ConstraintViolationException e) {
+			return new ApiResponse<>(400, e.toString(), null);
+		}
 	}
 	
 	@GetMapping("/get/byalbum/{album_id}")
-	public List<Song> getSongByAlbum(@PathVariable Long album_id){
-		return songService.findByAlbum(album_id);
+	public ApiResponse<?> getSongByAlbum(@PathVariable Long album_id){
+		try {
+			List<Song> songs = songService.findByAlbum(album_id);
+			if (songs != null) {
+				return new ApiResponse<>(200, AppConstant.SUCCESS_MESSAGE, songs); 
+			}
+			else {
+				return new ApiResponse<>(400, "Data empty", songs); 
+			}
+		} catch(org.hibernate.exception.ConstraintViolationException e) {
+			return new ApiResponse<>(400, e.toString(), null);
+		}
 	}
 	
 	@GetMapping("/get/byplaylist/{playlist_id}")
-	public List<Song> getSongByPlaylist(@PathVariable Long playlist_id){
-		return songService.findByPlaylist(playlist_id);
+	public ApiResponse<?> getSongByPlaylist(@PathVariable Long playlist_id){
+		try {
+			List<Song> songs = songService.findByPlaylist(playlist_id);
+			if (songs != null) {
+				return new ApiResponse<>(200, AppConstant.SUCCESS_MESSAGE, songs); 
+			}
+			else {
+				return new ApiResponse<>(400, "Data empty", songs); 
+			}
+		} catch(org.hibernate.exception.ConstraintViolationException e) {
+			return new ApiResponse<>(400, e.toString(), null);
+		}
+	
 	}
 	
 	@DeleteMapping("/delete/{song_id}")
@@ -213,7 +277,7 @@ public class SongController {
 			return ResponseEntity.ok().body(new MessageResponse(AppConstant.SUCCESS_MESSAGE, (long) 200));
 		}
 		else {
-			return ResponseEntity.badRequest().body(new MessageResponse(AppConstant.BAD_REQUEST_MESSAGE, (long) 200));
+			return ResponseEntity.badRequest().body(new MessageResponse(AppConstant.BAD_REQUEST_MESSAGE, (long) 400));
 		}
 	}
 	

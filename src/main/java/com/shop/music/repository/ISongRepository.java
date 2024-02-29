@@ -10,6 +10,10 @@ import com.shop.music.model.Song;
 
 @Repository
 public interface ISongRepository extends JpaRepository<Song, String> {
+	
+	@Query (nativeQuery = true,
+			value = "SELECT song.* FROM song " +
+					"where song.title LIKE %:title%")
 	List<Song> findByTitle(String title);
 	
 	@Query( nativeQuery = true,

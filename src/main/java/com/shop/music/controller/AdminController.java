@@ -90,7 +90,10 @@ public class AdminController {
                 .body(new UserInforDTO(userDetails.getId(),
                                        userDetails.getUsername(),
                                        userDetails.getEmail(),
-                                       userDetails.getRole()));
+                                       userDetails.getRole(),
+                                       jwtCookie.getValue(),
+                                       jwtCookie.getPath(),
+                                       jwtCookie.getName()));
 	}
 	
 	@PostMapping("/signout")
