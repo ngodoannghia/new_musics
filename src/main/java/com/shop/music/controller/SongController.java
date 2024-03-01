@@ -93,7 +93,7 @@ public class SongController {
 		
 		boolean status_offical = audio_offical.saveFile();
 		boolean status_demo = audio_demo.saveFile();
-		lyric_offical.saveFile();
+		boolean status_lyric = lyric_offical.saveFile();
 		
 		// Define
 		Pack pack = null;
@@ -155,15 +155,21 @@ public class SongController {
         song.setSong_id(UUID.randomUUID().toString());
         song.setTitle(title);
         song.setDescription(description);
-        song.setLink_demo(path_demo);
-        song.setLink_mp3(path_offical);
+        if (status_offical) {
+        	song.setLink_mp3(path_offical);
+        }
+        if (status_demo) {
+        	song.setLink_demo(path_demo);
+        }
+        if (status_lyric) {
+        	song.setLyris(path_lyric);
+        }
         song.setAlbum(album);
         song.setCategory(category);
         song.setCountry(country);
         song.setSingers(new HashSet<>(singers));
         song.setPlaylist(playlist);
         song.setPack(pack);
-        song.setLyris(save_data + path_lyric);
         
         songService.saveSong(song);
 		

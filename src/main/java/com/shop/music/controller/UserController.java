@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.security.core.Authentication;
 
 import com.shop.music.common.ApiResponse;
+import com.shop.music.common.AuthenResponse;
 import com.shop.music.common.JwtUtils;
 import com.shop.music.config.AppConstant;
 import com.shop.music.dto.LoginDTO;
@@ -83,14 +84,20 @@ public class UserController {
 		
 		ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(userDetails);
         
-        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
-                .body(new UserInforDTO(userDetails.getId(),
-                                       userDetails.getUsername(),
-                                       userDetails.getEmail(),
-                                       userDetails.getRole(),
-                                       jwtCookie.getValue(),
-                                       jwtCookie.getPath(),
-                                       jwtCookie.getName()));
+		UserInforDTO userInfor = new UserInforDTO(userDetails.getId(),
+                userDetails.getUsername(),
+                userDetails.getEmail(),
+                userDetails.getRole());
+
+		AuthenResponse<UserInforDTO> authenResponse = new AuthenResponse<UserInforDTO>();
+		authenResponse.setCode((long)200);
+		authenResponse.setToken(jwtCookie.getValue());
+		authenResponse.setName(jwtCookie.getName());
+		authenResponse.setPath(jwtCookie.getPath());
+		authenResponse.setUser(userInfor);
+		
+		return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
+		.body(new ApiResponse<AuthenResponse<UserInforDTO>>(200, AppConstant.SUCCESS_MESSAGE,authenResponse));
 	}
 	@PostMapping("/signout")
 	public ResponseEntity<?> logoutUser() {

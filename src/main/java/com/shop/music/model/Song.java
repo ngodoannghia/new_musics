@@ -59,6 +59,9 @@ public class Song {
 	@Column(name="duration")
 	private float duration;
 	
+	@Column(name="view", columnDefinition = "BIGINT DEFAULT 0")
+	private Long view;
+
 	@ManyToOne
 	@JoinColumn(name="pack_id")
 	private Pack pack;
@@ -168,7 +171,13 @@ public class Song {
 	public void setDuration(float duration) {
 		this.duration = duration;
 	}
+	public Long getView() {
+		return view;
+	}
 
+	public void setView(Long view) {
+		this.view = view;
+	}
 	public Pack getPack() {
 		return pack;
 	}

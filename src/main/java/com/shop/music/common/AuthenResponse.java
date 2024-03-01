@@ -1,40 +1,46 @@
 package com.shop.music.common;
 
-import com.shop.music.config.AppConstant;
-
 public class AuthenResponse<T> {
-    private  String jwttoken;
-    private  String refreshToken;
-    private T user;
+	private String token;
+	private String path;
+	private String name;
+    public String getToken() {
+		return token;
+	}
+	public void setToken(String token) {
+		this.token = token;
+	}
+	public String getPath() {
+		return path;
+	}
+	public void setPath(String path) {
+		this.path = path;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 
+	private T user;
+    private Long code;
 
-    public AuthenResponse(String jwttoken) {
-        this.jwttoken = jwttoken;
+    public AuthenResponse() {
+    	
     }
-    public AuthenResponse(String jwttoken,String refreshToken) {
-        this.jwttoken = jwttoken;
-        this.refreshToken = refreshToken;
-    }
-
-
-    public String getRefreshToken() {
-        return this.refreshToken;
-    }
-    public long getDuringTime(){
-        return AppConstant.JWT_TOKEN_VALIDITY;
+    
+    public AuthenResponse(Long code, T user) {
+        this.code = code;
+        this.user = user;
     }
 
-    public String getJwttoken() {
-        return jwttoken;
-    }
-
-    public void setJwttoken(String jwttoken) {
-        this.jwttoken = jwttoken;
-    }
-
-    public void setRefreshToken(String refreshToken) {
-        this.refreshToken = refreshToken;
-    }
+    public Long getCode() {
+		return code;
+	}
+	public void setCode(Long code) {
+		this.code = code;
+	}
 
     public T getUser() {
         return user;
