@@ -55,6 +55,7 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
 		return new BCryptPasswordEncoder();
 	}
   
+	@SuppressWarnings("removal")
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.cors().and().csrf(csrf -> csrf.disable())
