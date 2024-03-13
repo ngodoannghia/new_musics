@@ -67,6 +67,9 @@ public class User {
 	@Column(name="is_delete")
 	private boolean is_delete;
 	
+	@Column(name="gender", columnDefinition = "int default 1")
+	private int gender;
+	
 	@ManyToOne
 	@JoinColumn(name="pack_id")
 	private Pack pack;
@@ -209,6 +212,12 @@ public class User {
 	}
 	public void setSongs(Set<Song> songs) {
 		this.songs = songs;
+	}
+	public int getGender() {
+		return gender;
+	}
+	public void setGender(int gender) {
+		this.gender = gender;
 	}
 	
 }

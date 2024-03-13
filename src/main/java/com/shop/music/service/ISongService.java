@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Component;
+import org.springframework.data.domain.Page;
 
 import com.shop.music.model.Song;
 
@@ -18,4 +19,5 @@ public interface ISongService {
 	List<Song> findByAlbum(Long album_id);
 	List<Song> findByPlaylist(Long playlist_id);
 	void deleteById(String song_id);	
+	Page<Song> pageFindAllSong(int page, int limit, boolean sort);
 }

@@ -4,6 +4,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.shop.music.model.Song;
@@ -66,6 +70,23 @@ public class SongService implements ISongService {
 	public List<Song> findByPlaylist(Long playlist_id) {
 		// TODO Auto-generated method stub
 		return songRepository.findByPlaylist(playlist_id);
+	}
+
+	@Override
+	public Page<Song> pageFindAllSong(int page, int limit, boolean sort) {
+		// TODO Auto-generated method stub
+		Page<Song> pageSong = null;
+        Sort typeSort = null;
+        if (sort){
+            typeSort = Sort.by("create_at").descending();
+        } else {
+            typeSort = Sort.by("create_at").ascending();
+        }
+        Pageable pageable =  PageRequest.of(page, limit, typeSort );
+        
+        pageSong = songRepository.pageFindAll(pageable);
+        
+        return pageSong;
 	}
 
 }

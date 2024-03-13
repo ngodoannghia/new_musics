@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -274,7 +275,27 @@ public class SongController {
 		}
 	
 	}
-	
+	@GetMapping("/get/bypage/{page}")
+    public ApiResponse<?> getPageSongAll(@PathVariable  int page,
+                                      @RequestParam(value = "limit",required = false) Optional<Integer> limit,
+                                      @RequestParam(value = "sortType",required = false) Optional<String> sortType){
+		try {
+			int pageLimit = 20;
+	        boolean pageSortType = false;
+
+	        if (limit.isPresent()){
+	            pageLimit = limit.get();
+	        }
+	        if (sortType.isPresent() && sortType.get() == "desc"){
+	            pageSortType = true;
+	        }
+	        return  new ApiResponse<>(200,AppConstant.SUCCESS_MESSAGE,songService.pageFindAllSong(page,pageLimit,pageSortType));
+		}
+		catch(org.hibernate.exception.ConstraintViolationException e) {
+			return new ApiResponse<>(400, e.toString(), null);
+		}
+	}
+                                      
 	@DeleteMapping("/delete/{song_id}")
 	public ResponseEntity<MessageResponse> deleteSong(@PathVariable String song_id){
 		Optional<Song> song = songService.findById(song_id);

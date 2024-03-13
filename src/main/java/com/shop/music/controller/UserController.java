@@ -8,6 +8,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -85,9 +86,9 @@ public class UserController {
 		ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(userDetails);
         
 		UserInforDTO userInfor = new UserInforDTO(userDetails.getId(),
-                userDetails.getUsername(),
-                userDetails.getEmail(),
-                userDetails.getRole());
+								                userDetails.getUsername(),
+								                userDetails.getEmail(),
+								                userDetails.getRole());
 
 		AuthenResponse<UserInforDTO> authenResponse = new AuthenResponse<UserInforDTO>();
 		authenResponse.setCode((long)200);
@@ -99,7 +100,7 @@ public class UserController {
 		return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
 		.body(new ApiResponse<AuthenResponse<UserInforDTO>>(200, AppConstant.SUCCESS_MESSAGE,authenResponse));
 	}
-	@PostMapping("/signout")
+	@GetMapping("/logout")
 	public ResponseEntity<?> logoutUser() {
 		ResponseCookie cookie = jwtUtils.getCleanJwtCookie();
 		return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString())

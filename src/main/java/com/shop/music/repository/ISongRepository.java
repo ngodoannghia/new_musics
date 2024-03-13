@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import com.shop.music.model.Song;
 
@@ -39,5 +41,9 @@ public interface ISongRepository extends JpaRepository<Song, String> {
 					"inner join song on playlist.playlist_id = song.playlist_id " + 
 					"WHERE playlist.playlist_id = :playlist_id")
 	List<Song> findByPlaylist(Long playlist_id);
+	
+	@Query ( nativeQuery = true,
+			 value = "SELECT * FROM song")
+	Page<Song> pageFindAll(Pageable pageable);
 
 }
