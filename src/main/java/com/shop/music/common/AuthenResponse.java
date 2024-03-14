@@ -1,27 +1,10 @@
 package com.shop.music.common;
 
+import org.springframework.http.ResponseCookie;
+
+
 public class AuthenResponse<T> {
-	private String token;
-	private String path;
-	private String name;
-    public String getToken() {
-		return token;
-	}
-	public void setToken(String token) {
-		this.token = token;
-	}
-	public String getPath() {
-		return path;
-	}
-	public void setPath(String path) {
-		this.path = path;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
+	private ResponseCookie cookie;
 
 	private T user;
     private Long code;
@@ -29,7 +12,7 @@ public class AuthenResponse<T> {
     public AuthenResponse() {
     	
     }
-    
+   
     public AuthenResponse(Long code, T user) {
         this.code = code;
         this.user = user;
@@ -49,4 +32,14 @@ public class AuthenResponse<T> {
     public void setUser(T user) {
         this.user = user;
     }
+
+	public ResponseCookie getCookie() {
+		return cookie;
+	}
+
+	public void setCookie(ResponseCookie cookie) {
+		this.cookie = cookie;
+	}
+
+    
 }

@@ -95,9 +95,7 @@ public class AdminController {
       
 		AuthenResponse<UserInforDTO> authenResponse = new AuthenResponse<UserInforDTO>();
 		authenResponse.setCode((long)200);
-		authenResponse.setToken(jwtCookie.getValue());
-		authenResponse.setName(jwtCookie.getName());
-		authenResponse.setPath(jwtCookie.getPath());
+		authenResponse.setCookie(jwtCookie);
 		authenResponse.setUser(userInfor);
 		
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
