@@ -1,6 +1,7 @@
 package com.shop.music.controller;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -110,6 +111,7 @@ public class SongController {
 		try {
 			pack = packService.findPackById(pack_id).get();
 		} catch (Exception e){
+			System.out.println(e.toString());
 			pack = null;
 		}
 		
@@ -117,6 +119,7 @@ public class SongController {
 		try {
 			country = countryService.findCountryById(country_id).get();
 		} catch (Exception e) {
+			System.out.println(e.toString());
 			country = null;
 		}
 		
@@ -125,6 +128,7 @@ public class SongController {
 		try {
 			album = albumService.findAlbumById(album_id).get();
 		} catch (Exception e) {
+			System.out.println(e.toString());
 			album = null;
 		}
 		
@@ -133,6 +137,7 @@ public class SongController {
 		try {
 			singers = singerService.findSingerByIds(singers_id);
 		} catch (Exception e) {
+			System.out.println(e.toString());
 			singers = null;
 		}
 		
@@ -141,6 +146,7 @@ public class SongController {
 		try {
 			playlist = playlistService.findPlaylistById(playlist_id).get();
 		} catch(Exception e) {
+			System.out.println(e.toString());
 			playlist = null;
 		}
 		
@@ -149,6 +155,7 @@ public class SongController {
 		try {
 			category = categoryService.findCategoryById(category_id).get();
 		} catch(Exception e) {
+			System.out.println(e.toString());
 			category = null;
 		}
 		
@@ -172,6 +179,7 @@ public class SongController {
         song.setSingers(new HashSet<>(singers));
         song.setPlaylist(playlist);
         song.setPack(pack);
+        song.setCreate_at(LocalDateTime.now());
         
         songService.saveSong(song);
 		

@@ -2,6 +2,7 @@ package com.shop.music.service;
 
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.shop.music.model.Country;
@@ -9,6 +10,7 @@ import com.shop.music.repository.ICountryReporitory;
 
 @Service
 public class CountryService implements ICountryService {
+	@Autowired
 	private ICountryReporitory countryRepository;
 	@Override
 	public Optional<Country> findCountryById(Long id) {
