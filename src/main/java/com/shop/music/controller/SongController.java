@@ -10,13 +10,11 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -80,115 +78,122 @@ public class SongController {
 													 @RequestParam("category_id") Long category_id
 													 ) throws IOException{
 		
-		String name_offical = StringUtils.cleanPath(file_offical.getOriginalFilename());
-		String name_demo = StringUtils.cleanPath(file_demo.getOriginalFilename());
-		String name_lyric = StringUtils.cleanPath(file_lyric.getOriginalFilename());
-		
-		String path_offical = "audio/offical/" + UUID.randomUUID().toString() + "_" + name_offical;
-		String path_demo = "audio/demo/" + UUID.randomUUID().toString() + "_" + name_demo;
-		String path_lyric = "lyrics/" + UUID.randomUUID().toString() + "_" + name_lyric;
-		
-		String text_response = "";
-		
-		FileProcess audio_offical = new FileProcess(save_data + path_offical, file_offical);
-		FileProcess audio_demo = new FileProcess(save_data + path_demo, file_offical);
-		FileProcess lyric_offical = new FileProcess(save_data + path_lyric, file_lyric);
-		
-		boolean status_offical = audio_offical.saveFile();
-		boolean status_demo = audio_demo.saveFile();
-		boolean status_lyric = lyric_offical.saveFile();
-		
-		// Define
-		Pack pack = null;
-		Album album = null;
-		List<Singer> singers = null;
-		Country country = null;
-		Playlist playlist = null;
-		Category category = null;
-		
-		
-		// Process pack
 		try {
-			pack = packService.findPackById(pack_id).get();
-		} catch (Exception e){
-			System.out.println(e.toString());
-			pack = null;
+			String name_offical = StringUtils.cleanPath(file_offical.getOriginalFilename());
+			String name_demo = StringUtils.cleanPath(file_demo.getOriginalFilename());
+			String name_lyric = StringUtils.cleanPath(file_lyric.getOriginalFilename());
+			
+			String path_offical = "audio/offical/" + UUID.randomUUID().toString() + "_" + name_offical;
+			String path_demo = "audio/demo/" + UUID.randomUUID().toString() + "_" + name_demo;
+			String path_lyric = "lyrics/" + UUID.randomUUID().toString() + "_" + name_lyric;
+			
+			String text_response = "";
+			
+			FileProcess audio_offical = new FileProcess(save_data + path_offical, file_offical);
+			FileProcess audio_demo = new FileProcess(save_data + path_demo, file_offical);
+			FileProcess lyric_offical = new FileProcess(save_data + path_lyric, file_lyric);
+			
+			boolean status_offical = audio_offical.saveFile();
+			boolean status_demo = audio_demo.saveFile();
+			boolean status_lyric = lyric_offical.saveFile();
+			
+			// Define
+			Pack pack = null;
+			Album album = null;
+			List<Singer> singers = null;
+			Country country = null;
+			Playlist playlist = null;
+			Category category = null;
+			
+			
+			// Process pack
+			try {
+				pack = packService.findPackById(pack_id).get();
+			} catch (Exception e){
+				System.out.println(e.toString());
+				pack = null;
+			}
+			
+			// Process country
+			try {
+				country = countryService.findCountryById(country_id).get();
+			} catch (Exception e) {
+				System.out.println(e.toString());
+				country = null;
+			}
+			
+			
+			// Process album
+			try {
+				album = albumService.findAlbumById(album_id).get();
+			} catch (Exception e) {
+				System.out.println(e.toString());
+				album = null;
+			}
+			
+			
+			// Process singer
+			try {
+				singers = singerService.findSingerByIds(singers_id);
+			} catch (Exception e) {
+				System.out.println(e.toString());
+				singers = null;
+			}
+			
+			
+			// Process playlist
+			try {
+				playlist = playlistService.findPlaylistById(playlist_id).get();
+			} catch(Exception e) {
+				System.out.println(e.toString());
+				playlist = null;
+			}
+			
+			
+			// Process category
+			try {
+				category = categoryService.findCategoryById(category_id).get();
+			} catch(Exception e) {
+				System.out.println(e.toString());
+				category = null;
+			}
+			
+			
+	        Song song = new Song();
+	        song.setSong_id(UUID.randomUUID().toString());
+	        song.setTitle(title);
+	        song.setDescription(description);
+	        if (status_offical) {
+	        	song.setLink_mp3(path_offical);
+	        }
+	        if (status_demo) {
+	        	song.setLink_demo(path_demo);
+	        }
+	        if (status_lyric) {
+	        	song.setLyris(path_lyric);
+	        }
+	        song.setAlbum(album);
+	        song.setCategory(category);
+	        song.setCountry(country);
+	        song.setSingers(new HashSet<>(singers));
+	        song.setPlaylist(playlist);
+	        song.setPack(pack);
+	        song.setCreate_at(LocalDateTime.now());
+	        
+	        songService.saveSong(song);
+	        
+	        if (status_offical == false | status_demo == false) {
+	        	return ResponseEntity.ok().body(new ApiResponse<Song>(200, text_response ,song));
+	        }
+	        else {
+	        	return ResponseEntity.ok().body(new ApiResponse<Song>(200, AppConstant.SUCCESS_MESSAGE,song));
+	        }
+	        
 		}
-		
-		// Process country
-		try {
-			country = countryService.findCountryById(country_id).get();
-		} catch (Exception e) {
-			System.out.println(e.toString());
-			country = null;
+		catch (org.hibernate.exception.ConstraintViolationException e) {
+        	return ResponseEntity.badRequest().body(new ApiResponse<Song>(500, AppConstant.BAD_REQUEST_MESSAGE ,null));
 		}
-		
-		
-		// Process album
-		try {
-			album = albumService.findAlbumById(album_id).get();
-		} catch (Exception e) {
-			System.out.println(e.toString());
-			album = null;
-		}
-		
-		
-		// Process singer
-		try {
-			singers = singerService.findSingerByIds(singers_id);
-		} catch (Exception e) {
-			System.out.println(e.toString());
-			singers = null;
-		}
-		
-		
-		// Process playlist
-		try {
-			playlist = playlistService.findPlaylistById(playlist_id).get();
-		} catch(Exception e) {
-			System.out.println(e.toString());
-			playlist = null;
-		}
-		
-		
-		// Process category
-		try {
-			category = categoryService.findCategoryById(category_id).get();
-		} catch(Exception e) {
-			System.out.println(e.toString());
-			category = null;
-		}
-		
-		
-        Song song = new Song();
-        song.setSong_id(UUID.randomUUID().toString());
-        song.setTitle(title);
-        song.setDescription(description);
-        if (status_offical) {
-        	song.setLink_mp3(path_offical);
-        }
-        if (status_demo) {
-        	song.setLink_demo(path_demo);
-        }
-        if (status_lyric) {
-        	song.setLyris(path_lyric);
-        }
-        song.setAlbum(album);
-        song.setCategory(category);
-        song.setCountry(country);
-        song.setSingers(new HashSet<>(singers));
-        song.setPlaylist(playlist);
-        song.setPack(pack);
-        song.setCreate_at(LocalDateTime.now());
-        
-        songService.saveSong(song);
-		
-        if (status_offical == false | status_demo == false) {
-        	return ResponseEntity.badRequest().body(new ApiResponse<Song>(204, text_response ,song));
-        }
-        else {
-        	return ResponseEntity.ok().body(new ApiResponse<Song>(200, AppConstant.SUCCESS_MESSAGE,song));
-        }
+	
 	}
 	
 	@GetMapping("/get/byid/{song_id}")
@@ -284,7 +289,7 @@ public class SongController {
 		}
 	
 	}
-	@CrossOrigin(origins = "http://localhost:3000")
+
 	@GetMapping("/get/bypage/{page}")
     public ApiResponse<?> getPageSongAll(@PathVariable  int page,
                                       @RequestParam(value = "limit",required = false) Optional<Integer> limit,

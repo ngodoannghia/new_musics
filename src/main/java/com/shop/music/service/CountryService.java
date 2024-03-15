@@ -1,5 +1,6 @@
 package com.shop.music.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,21 @@ public class CountryService implements ICountryService {
 	public Optional<Country> findCountryById(Long id) {
 		// TODO Auto-generated method stub
 		return countryRepository.findById(id);
+	}
+	@Override
+	public List<Country> findAllCountry() {
+		// TODO Auto-generated method stub
+		return countryRepository.findAll();
+	}
+	@Override
+	public Country saveCountry(Country country) {
+		// TODO Auto-generated method stub
+		return countryRepository.save(country);
+	}
+	@Override
+	public void deleteById(Long id) {
+		// TODO Auto-generated method stub
+		countryRepository.deleteById(id);
 	}
 
 }
