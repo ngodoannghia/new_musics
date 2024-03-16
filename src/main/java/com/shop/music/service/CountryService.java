@@ -19,7 +19,7 @@ public class CountryService implements ICountryService {
 		return countryRepository.findById(id);
 	}
 	@Override
-	public List<Country> findAllCountry() {
+	public List<Country> getAllCountry() {
 		// TODO Auto-generated method stub
 		return countryRepository.findAll();
 	}

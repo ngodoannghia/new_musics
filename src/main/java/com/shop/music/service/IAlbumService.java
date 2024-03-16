@@ -1,5 +1,6 @@
 package com.shop.music.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -13,4 +14,5 @@ public interface IAlbumService {
 	Page<Album> pageFindAllAlbum(int page, int limit, boolean sort);
 	Album saveAlbum(Album album);
 	void deleteById(Long id);
+	List<Album> getAllAlbum();
 }

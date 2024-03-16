@@ -1,8 +1,13 @@
 package com.shop.music.model;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.shop.music.common.LocalDateTimeDeserializer;
+import com.shop.music.common.LocalDateTimeSerializer;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,6 +27,11 @@ public class Country {
 	
 	@Column(name="name", length=100)
 	private String name;
+	
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+	@Column(name="create_at")
+	private LocalDateTime create_at;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy="country")
@@ -75,4 +85,11 @@ public class Country {
 	public void setName(String name) {
 		this.name = name;
 	}
+	public LocalDateTime getCreate_at() {
+		return create_at;
+	}
+	public void setCreate_at(LocalDateTime create_at) {
+		this.create_at = create_at;
+	}
+	
 }

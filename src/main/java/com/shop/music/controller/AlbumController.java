@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.shop.music.common.ApiResponse;
+import com.shop.music.common.MessageResponse;
 import com.shop.music.config.AppConstant;
 import com.shop.music.model.Album;
 import com.shop.music.model.Category;
@@ -59,6 +61,17 @@ public class AlbumController {
 			return new ApiResponse<>(200, AppConstant.SUCCESS_MESSAGE,
 					albumService.pageFindAllAlbum(page, pageLimit, pageSortType));
 		} catch (org.hibernate.exception.ConstraintViolationException e) {
+			return new ApiResponse<>(400, e.toString(), null);
+		}
+	}
+	@GetMapping("/get/all")
+	public ApiResponse<?> getAllAlbum(){
+		try {
+			List<Album> albums = albumService.getAllAlbum();
+			
+			return new ApiResponse<>(200, AppConstant.SUCCESS_MESSAGE, albums);
+		}
+		catch (org.hibernate.exception.ConstraintViolationException e) {
 			return new ApiResponse<>(400, e.toString(), null);
 		}
 	}
@@ -114,8 +127,19 @@ public class AlbumController {
 		}
 		
 		catch (org.hibernate.exception.ConstraintViolationException e){
-			return ResponseEntity.badRequest().body(new ApiResponse<Album>(500, AppConstant.BAD_REQUEST_MESSAGE, null));
+			return ResponseEntity.badRequest().body(new ApiResponse<>(500, AppConstant.BAD_REQUEST_MESSAGE, null));
 		}
 
+	}
+	@DeleteMapping("/delete/{album_id}")
+	public ResponseEntity<MessageResponse> deleteSong(@PathVariable Long album_id){
+		Optional<Album> album = albumService.findAlbumById(album_id);
+		if (album.isPresent()) {
+			albumService.deleteById(album_id);			
+			return ResponseEntity.ok().body(new MessageResponse(AppConstant.SUCCESS_MESSAGE, (long) 200));
+		}
+		else {
+			return ResponseEntity.badRequest().body(new MessageResponse(AppConstant.BAD_REQUEST_MESSAGE, (long) 400));
+		}
 	}
 }

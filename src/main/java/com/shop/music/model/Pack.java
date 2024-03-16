@@ -1,8 +1,13 @@
 package com.shop.music.model;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.shop.music.common.LocalDateTimeDeserializer;
+import com.shop.music.common.LocalDateTimeSerializer;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -29,6 +34,11 @@ public class Pack {
 	@Column(name="price")
 	private float price;
 	
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+	@Column(name="create_at")
+	private LocalDateTime create_at;
+	
 	
 	@JsonIgnore
 	@OneToMany(mappedBy="pack")
@@ -38,6 +48,18 @@ public class Pack {
 	@OneToMany(mappedBy="pack")
 	private Set<Song> song;
 	
+	public LocalDateTime getCreate_at() {
+		return create_at;
+	}
+	public void setCreate_at(LocalDateTime create_at) {
+		this.create_at = create_at;
+	}
+	public Set<Song> getSong() {
+		return song;
+	}
+	public void setSong(Set<Song> song) {
+		this.song = song;
+	}
 	public Long getPack_id() {
 		return pack_id;
 	}
@@ -64,4 +86,5 @@ public class Pack {
 	public void setUsers(Set<User> users) {
 		this.users = users;
 	}
+	
 }

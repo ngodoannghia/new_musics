@@ -1,5 +1,6 @@
 package com.shop.music.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.shop.music.model.Category;
 import com.shop.music.model.Playlist;
 import com.shop.music.repository.IPlaylistRepository;
 
@@ -51,6 +51,12 @@ public class PlaylistService implements IPlaylistService {
 	public void deleteById(Long id) {
 		// TODO Auto-generated method stub
 		playlistRepository.deleteById(id);
+	}
+
+	@Override
+	public List<Playlist> getAllPlaylist() {
+		// TODO Auto-generated method stub
+		return playlistRepository.findAll();
 	}
 
 }

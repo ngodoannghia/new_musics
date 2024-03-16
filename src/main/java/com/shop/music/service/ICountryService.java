@@ -10,7 +10,7 @@ import com.shop.music.model.Country;
 @Component
 public interface ICountryService {
 	Optional<Country> findCountryById(Long id);
-	List<Country> findAllCountry();
+	List<Country> getAllCountry();
 	Country saveCountry(Country country);
 	void deleteById(Long id);
 }

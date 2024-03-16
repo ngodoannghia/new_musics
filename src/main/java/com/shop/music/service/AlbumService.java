@@ -1,5 +1,6 @@
 package com.shop.music.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,12 @@ public class AlbumService implements IAlbumService {
 	public void deleteById(Long id) {
 		// TODO Auto-generated method stub
 		albumRepository.deleteById(id);
+	}
+
+	@Override
+	public List<Album> getAllAlbum() {
+		// TODO Auto-generated method stub
+		return albumRepository.findAll();
 	}
 
 }

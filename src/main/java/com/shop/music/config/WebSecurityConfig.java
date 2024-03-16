@@ -62,7 +62,7 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
 			.exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
 			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			.authorizeHttpRequests(auth -> 
-		auth.requestMatchers("/api/user/signup","/api/user/login", "/api/admin/signup", "/api/admin/login", "/api/song/**","/api/song/*").permitAll()
+		auth.requestMatchers("/api/user/signup","/api/user/login", "/api/admin/signup", "/api/admin/login", "/api/song/**","/api/song/*", "/api/**").permitAll()
 			.anyRequest().authenticated());
     
 		http.headers(headers -> headers.frameOptions(frameOption -> frameOption.sameOrigin()));
