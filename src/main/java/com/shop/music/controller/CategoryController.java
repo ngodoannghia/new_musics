@@ -38,6 +38,26 @@ public class CategoryController {
 			return new ApiResponse<>(400, e.toString(), null);
 		}
 	}
+	@GetMapping("/get/bypage/{page}")
+	public ApiResponse<?> getPageCategoryAll(@PathVariable int page,
+			@RequestParam(value = "limit", required = false) Optional<Integer> limit,
+			@RequestParam(value = "sortType", required = false) Optional<String> sortType) {
+		try {
+			int pageLimit = 20;
+			boolean pageSortType = false;
+
+			if (limit.isPresent()) {
+				pageLimit = limit.get();
+			}
+			if (sortType.isPresent() && sortType.get() == "desc") {
+				pageSortType = true;
+			}
+			return new ApiResponse<>(200, AppConstant.SUCCESS_MESSAGE,
+					categoryService.pageFindAllCategory(page, pageLimit, pageSortType));
+		} catch (org.hibernate.exception.ConstraintViolationException e) {
+			return new ApiResponse<>(400, e.toString(), null);
+		}
+	}
 	@PostMapping("/add")
 	public ResponseEntity<ApiResponse<?>> addCategory( @RequestParam("name") String name){
 		try {

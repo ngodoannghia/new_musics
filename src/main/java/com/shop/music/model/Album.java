@@ -46,7 +46,7 @@ public class Album {
 	@OneToMany(mappedBy="album")
 	private Set<Song> song;
 	
-	@JsonIgnore
+//	@JsonIgnore
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "album_singer", 
                joinColumns = @JoinColumn(name = "album_id"),

@@ -49,10 +49,30 @@ public class PlaylistController {
 			return new ApiResponse<>(400, e.toString(), null);
 		}
 	}
-	
+	@GetMapping("/get/bypage/{page}")
+	public ApiResponse<?> getPageAlbumAll(@PathVariable int page,
+			@RequestParam(value = "limit", required = false) Optional<Integer> limit,
+			@RequestParam(value = "sortType", required = false) Optional<String> sortType) {
+		try {
+			int pageLimit = 20;
+			boolean pageSortType = false;
+
+			if (limit.isPresent()) {
+				pageLimit = limit.get();
+			}
+			if (sortType.isPresent() && sortType.get() == "desc") {
+				pageSortType = true;
+			}
+			return new ApiResponse<>(200, AppConstant.SUCCESS_MESSAGE,
+					playlistService.pageFindAllPlaylist(page, pageLimit, pageSortType));
+		} catch (org.hibernate.exception.ConstraintViolationException e) {
+			return new ApiResponse<>(400, e.toString(), null);
+		}
+	}
 	@PostMapping("/add")
 	public ResponseEntity<ApiResponse<?>> addPlaylist(
 			 @RequestParam("name") String name,
+			 @RequestParam("description") String description,
 			 @RequestParam("country_id") Long country_id,
 			 @RequestParam("category_id") Long category_id
 			 ) throws IOException{
@@ -83,6 +103,7 @@ public class PlaylistController {
 			playlist.setName(name);
 			playlist.setCategory(category);
 			playlist.setCountry(country);
+			playlist.setDescription(description);
 			playlist.setCreate_at(LocalDateTime.now());
 			
 			playlistService.savePlaylist(playlist);

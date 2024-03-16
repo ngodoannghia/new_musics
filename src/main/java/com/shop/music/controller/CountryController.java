@@ -38,12 +38,34 @@ public class CountryController {
 			return new ApiResponse<>(400, e.toString(), null);
 		}
 	}
-	
+	@GetMapping("/get/bypage/{page}")
+	public ApiResponse<?> getPageAlbumAll(@PathVariable int page,
+			@RequestParam(value = "limit", required = false) Optional<Integer> limit,
+			@RequestParam(value = "sortType", required = false) Optional<String> sortType) {
+		try {
+			int pageLimit = 20;
+			boolean pageSortType = false;
+
+			if (limit.isPresent()) {
+				pageLimit = limit.get();
+			}
+			if (sortType.isPresent() && sortType.get() == "desc") {
+				pageSortType = true;
+			}
+			return new ApiResponse<>(200, AppConstant.SUCCESS_MESSAGE,
+					countryService.pageFindAllCountry(page, pageLimit, pageSortType));
+		} catch (org.hibernate.exception.ConstraintViolationException e) {
+			return new ApiResponse<>(400, e.toString(), null);
+		}
+	}
 	@PostMapping("/add")
-	public ResponseEntity<ApiResponse<?>> addCountry( @RequestParam("name") String name){
+	public ResponseEntity<ApiResponse<?>> addCountry( 
+			@RequestParam("name") String name,
+			@RequestParam("description") String description){
 		try {
 			Country country = new Country();	
 			country.setName(name);
+			country.setDescription(description);
 			country.setCreate_at(LocalDateTime.now());
 			countryService.saveCountry(country);
 			

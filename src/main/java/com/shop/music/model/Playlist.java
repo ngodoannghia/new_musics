@@ -30,6 +30,9 @@ public class Playlist {
 	@Column(name="name", length=100)
 	private String name;
 	
+	@Column(name="description", length=255)
+	private String description;
+	
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
 	@Column(name="create_at")
@@ -82,6 +85,12 @@ public class Playlist {
 	}
 	public void setCreate_at(LocalDateTime create_at) {
 		this.create_at = create_at;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 }
